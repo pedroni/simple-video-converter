@@ -1,5 +1,4 @@
 import { convert } from "./support/convert/convert.function";
-import { exec } from "child_process";
 import { run } from "./index";
 
 const clearArgs = () => {
@@ -11,7 +10,7 @@ const clearArgs = () => {
   );
 };
 
-jest.mock("./support/convert");
+jest.mock("./support/convert/convert.function");
 
 describe("Entrypoint", () => {
   beforeEach(() => {
@@ -36,11 +35,5 @@ describe("Entrypoint", () => {
     );
 
     clearArgs();
-  });
-
-  it("doesnt try to convert when has no arguments", async () => {
-    await run();
-
-    expect(convert).not.toHaveBeenCalled();
   });
 });
