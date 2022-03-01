@@ -20,6 +20,24 @@ const createToFolder = async (args: ConvertArgs) => {
   }
 };
 
+const convertFile = (args: ConvertArgs, file: string) => {
+  const fileName = path.basename(file);
+
+  if (!fileName.endsWith(args.from)) {
+    return;
+  }
+
+  const newFileName = fileName.replaceAll(args.from, args.to);
+
+  child_process.execSync(
+    `ffmpeg -i ${path.join(args.folder, fileName)} -strict -2 ${path.join(
+      args.folder,
+      args.to,
+      newFileName
+    )}`
+  );
+};
+
 export const convert = async (args: ConvertArgs): Promise<boolean> => {
   console.time("Starting to convert files");
 
@@ -28,21 +46,10 @@ export const convert = async (args: ConvertArgs): Promise<boolean> => {
   await createToFolder(args);
 
   files.forEach((file) => {
-    const fileName = path.basename(file);
-
-    if (!fileName.endsWith(args.from)) {
-      return;
-    }
-
-    const newFileName = fileName.replaceAll(args.from, args.to);
-
-    child_process.execSync(
-      `ffmpeg -i ${path.join(args.folder, fileName)} -strict -2 ${path.join(
-        args.folder,
-        args.to,
-        newFileName
-      )}`
-    );
+    console.log("-------------------");
+    console.log("Converting", file);
+    convertFile(args, file);
+    console.log("Done converting", file);
   });
 
   console.timeEnd("Starting to convert files");
