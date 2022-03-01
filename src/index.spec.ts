@@ -1,4 +1,4 @@
-import { convert } from "./support/convert";
+import { convert } from "./support/convert/convert.function";
 import { exec } from "child_process";
 import { run } from "./index";
 
@@ -22,7 +22,7 @@ describe("Entrypoint", () => {
     process.argv.push(
       "--from=avi",
       "--to=mp4",
-      '--folder="path/folder/example"'
+      '--folder="/path/folder/example"'
     );
 
     await run();
@@ -31,7 +31,7 @@ describe("Entrypoint", () => {
       expect.objectContaining({
         from: "avi",
         to: "mp4",
-        folder: "path/folder/example",
+        folder: "/path/folder/example",
       })
     );
 

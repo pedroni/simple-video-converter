@@ -1,5 +1,5 @@
 import { extractArguments } from "./support/extract-arguments.function";
-import { convert } from "./support/convert";
+import { convert } from "./support/convert/convert.function";
 
 export const run = async () => {
   const args = await extractArguments();
