@@ -5,4 +5,7 @@ module.exports = {
   resetMocks: true,
   clearMocks: true,
   resetModules: true,
+  coverageDirectory: "coverage",
+  coverageProvider: "v8",
+  collectCoverage: true,
 };
