@@ -1,0 +1,25 @@
+{
+  "name": "simple-video-converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "convert": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroni/simple-video-converter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedroni/simple-video-converter/issues"
+  },
+  "homepage": "https://github.com/pedroni/simple-video-converter#readme",
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1"
+  }
+}
