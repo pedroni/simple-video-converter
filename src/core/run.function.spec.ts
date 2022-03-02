@@ -1,5 +1,5 @@
-import { convert } from "./support/convert/convert.function";
-import { run } from "./index";
+import { convert } from "../support/convert/convert.function";
+import { run } from "./run.function";
 
 const clearArgs = () => {
   process.argv = process.argv.filter(
@@ -10,9 +10,9 @@ const clearArgs = () => {
   );
 };
 
-jest.mock("./support/convert/convert.function");
+jest.mock("../support/convert/convert.function");
 
-describe("Entrypoint", () => {
+describe("run.function", () => {
   beforeEach(() => {
     (<jest.Mock>convert).mockReturnValue(true);
   });

@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
 import child_process from "child_process";
 
@@ -20,21 +21,30 @@ const createToFolder = async (args: ConvertArgs) => {
   }
 };
 
-const convertFile = (args: ConvertArgs, file: string) => {
+export const convertFile = (args: ConvertArgs, file: string) => {
   const fileName = path.basename(file);
 
+  // allow only files that ends with the from extension
   if (!fileName.endsWith(args.from)) {
     return;
   }
 
+  // if hidden file dont convert it
+  if (fileName.startsWith(".")) {
+    return;
+  }
+
   const newFileName = fileName.replaceAll(args.from, args.to);
+  const newFilePath = path.join(args.folder, args.to, newFileName);
+
+  // if conversion already exists don't convert it
+  if (fsSync.existsSync(newFilePath)) {
+    console.log("Skpping", fileName, "because it already exists");
+    return;
+  }
 
   child_process.execSync(
-    `ffmpeg -i ${path.join(args.folder, fileName)} -strict -2 ${path.join(
-      args.folder,
-      args.to,
-      newFileName
-    )}`
+    `ffmpeg -i ${path.join(args.folder, fileName)} -strict -2 ${newFilePath}`
   );
 };
 
@@ -45,12 +55,20 @@ export const convert = async (args: ConvertArgs): Promise<boolean> => {
 
   await createToFolder(args);
 
-  files.forEach((file) => {
-    console.log("-------------------");
-    console.log("Converting", file);
-    convertFile(args, file);
-    console.log("Done converting", file);
-  });
+  files
+    .sort((file, compareFile) => file.localeCompare(compareFile)) // sort alphabetically
+    .forEach((file) => {
+      console.log("-------------------");
+      console.log("-------------------");
+      console.log("-------------------");
+      console.log("Converting", file);
+      try {
+        convertFile(args, file);
+        console.log("Done converting", file);
+      } catch {
+        console.log("Failed converting", file);
+      }
+    });
 
   console.timeEnd("Starting to convert files");
 
